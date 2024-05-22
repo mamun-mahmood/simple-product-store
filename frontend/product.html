@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product Details</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="home.html">Product Store</a>
+    </nav>
+
+    <div class="container mt-5" id="product-details">
+      <!-- Product details will be dynamically inserted here -->
+    </div>
+
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+      const productId = urlParams.get("id");
+
+      fetch(`http://localhost:3000/api/products/${productId}`)
+        .then((response) => response.json())
+        .then((product) => {
+          const productDetails = document.getElementById("product-details");
+          if (product) {
+            productDetails.innerHTML = `
+            <div class="row">
+              <div class="col-md-6">
+                <img src="${product.image_url}" class="img-fluid" alt="${product.name}">
+              </div>
+              <div class="col-md-6">
+                <h1 class="display-4">${product.name}</h1>
+                <p class="lead">${product.description}</p>
+                <h3 class="text-danger">$${product.price}</h3>
+                <hr class="my-4">
+                <h4>Specifications</h4>
+                <ul>
+                  <li>Weight: ${product.weight} kg</li>
+                  <li>Dimensions: ${product.dimensions}</li>
+                  <li>Color: ${product.color}</li>
+                  <li>Material: ${product.material}</li>
+                </ul>
+                <a href="checkout.html?id=${product.id}" class="btn btn-primary btn-lg ml-3">Order Now</a>
+              </div>
+            </div>`;
+          } else {
+            productDetails.innerHTML = "<p>Product not found.</p>";
+          }
+        });
+    </script>
+  </body>
+</html>

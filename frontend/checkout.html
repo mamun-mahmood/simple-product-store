@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checkout</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="home.html">Product Store</a>
+    </nav>
+
+    <div class="container mt-5" id="checkout-details">
+      <!-- Checkout details will be dynamically inserted here -->
+    </div>
+
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+      const productId = urlParams.get("id");
+
+      fetch(`http://localhost:3000/api/products/${productId}`)
+        .then((response) => response.json())
+        .then((product) => {
+          const checkoutDetails = document.getElementById("checkout-details");
+          if (product) {
+            checkoutDetails.innerHTML = `
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Checkout - ${product.name}</h5>
+                <p class="card-text">Price: $99.99</p>
+                <button class="btn btn-success" onclick="placeOrder()">Place Order</button>
+              </div>
+            </div>`;
+          } else {
+            checkoutDetails.innerHTML = "<p>Product not found.</p>";
+          }
+        });
+
+      function placeOrder() {
+        alert("Order placed!");
+        window.location.href = "home.html";
+      }
+    </script>
+  </body>
+</html>

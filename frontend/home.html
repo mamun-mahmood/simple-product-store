@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product List</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+      <a class="navbar-brand text-primary" href="#">Product Store</a>
+    </nav>
+
+    <div class="container mt-5">
+      <div class="row" id="product-list">
+        <!-- Product cards will be dynamically inserted here -->
+      </div>
+    </div>
+
+    <script>
+      fetch("http://localhost:3000/api/products")
+        .then((response) => response.json())
+        .then((products) => {
+          const productList = document.getElementById("product-list");
+          products.forEach(({id, name, image_url, description, price}) => {
+            const productCard = `
+            <div class="col-md-4">
+              <div class="card mb-4 rounded-lg">
+                <img src="${image_url}" class="card-img-top" alt="${name}">
+                <div class="card-body">
+                  <h5 class="card-title">${name}</h5>
+                  <p class="card-text">${description}</p>
+                  <a href="product.html?id=${id}" class="btn btn-outline-primary">$${price}</a>
+                </div>
+              </div>
+            </div>`;
+            productList.innerHTML += productCard;
+          });
+        });
+    </script>
+  </body>
+</html>
